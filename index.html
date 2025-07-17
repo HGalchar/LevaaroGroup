@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Property Pre-Contract Form</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-[#F5F5F5] text-gray-800 flex items-center justify-center min-h-screen">
     <div class="w-full max-w-4xl p-8 bg-[#F5F5F5] rounded-lg shadow-lg">
         <!-- Header -->
@@ -22,31 +24,43 @@
 
         <h1 class="text-3xl font-bold text-center mb-8">Property Pre-Contract Form</h1>
 
+        <!-- Note -->
+        <div class="md:col-span-2 mb-6">
+            <p class="text-sm text-gray-600"><strong>Note:</strong> Please attach your last three months' salary slips
+                and ID proof for all applicants, including children.</p>
+        </div>
+
         <!-- Alert -->
         <div id="alert" class="hidden text-red-600 text-sm mb-6 text-center">Please fill in all required fields.</div>
 
         <form id="preContractForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label class="block text-sm font-medium mb-1">Full Name *</label>
-                <input id="name" name="name" required type="text" placeholder="Enter full name"
+                <label class="block text-sm font-medium mb-1">Main Applicant Name *</label>
+                <input id="name" name="main_applicant_name" required type="text" placeholder="Enter full name"
                     class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1">Email Address *</label>
-                <input id="email" name="email" required type="email" placeholder="Enter email"
+                <label class="block text-sm font-medium mb-1">Main Applicant Email *</label>
+                <input id="email" name="main_applicant_email" required type="email" placeholder="Enter email"
                     class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1">Phone Number *</label>
-                <input id="phone" name="phone" required type="tel" placeholder="Enter phone number"
+                <label class="block text-sm font-medium mb-1">Main Applicant Phone Number *</label>
+                <input id="phone" name="main_applicant_phone" required type="tel" placeholder="Enter phone number"
                     class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1">Occupation</label>
-                <input name="occupation" type="text" placeholder="Your occupation"
+                <label class="block text-sm font-medium mb-1">Main Applicant Occupation</label>
+                <input name="main_applicant_occupation" type="text" placeholder="Your occupation"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Main Applicant Date of Birth *</label>
+                <input id="main_applicant_dob" name="main_applicant_dob" required type="date"
                     class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
             </div>
 
@@ -64,8 +78,9 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1">Share Code *</label>
-                <input id="share_code" name="share_code" required type="text" placeholder="Enter share code"
+                <label class="block text-sm font-medium mb-1">Right To Rent Share Code *</label>
+                <input id="share_code" name="share_code" required type="text"
+                    placeholder="Enter Right To Rent Share Code"
                     class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
             </div>
 
@@ -94,15 +109,22 @@
             </div>
 
             <div class="md:col-span-2">
-                <label class="block text-sm font-medium mb-1">Other Tenant Details</label>
-                <textarea name="other_tenants" rows="4" placeholder="Optional details about other tenants"
+                <label class="block text-sm font-medium mb-1">Main Applicant Current Address *</label>
+                <textarea id="address" name="main_applicant_address" required rows="4"
+                    placeholder="Enter your current address"
                     class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800"></textarea>
             </div>
 
+            <!-- Other Tenants Section -->
             <div class="md:col-span-2">
-                <label class="block text-sm font-medium mb-1">Current Address *</label>
-                <textarea id="address" name="address" required rows="4" placeholder="Enter your current address"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800"></textarea>
+                <h3 class="text-lg font-semibold mb-2">Other Tenants</h3>
+                <div id="tenantsContainer" class="space-y-4">
+                    <!-- Tenant sections will be added dynamically -->
+                </div>
+                <button type="button" id="addTenantBtn"
+                    class="mt-4 bg-gray-600 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition duration-200">
+                    Add Tenant
+                </button>
             </div>
 
             <div class="md:col-span-2">
@@ -123,21 +145,96 @@
     <script>
         const form = document.getElementById('preContractForm');
         const alertBox = document.getElementById('alert');
+        const tenantsContainer = document.getElementById('tenantsContainer');
+        const addTenantBtn = document.getElementById('addTenantBtn');
+        let tenantCount = 0;
+
+        // Function to add a new tenant section
+        function addTenantSection() {
+            tenantCount++;
+            const tenantDiv = document.createElement('div');
+            tenantDiv.className = 'tenant-section border p-4 rounded-md space-y-4';
+            tenantDiv.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <h4 class="text-sm font-medium">Tenant ${tenantCount}</h4>
+                    <button type="button" class="remove-tenant text-red-600 hover:text-red-800">Remove</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Name *</label>
+                        <input name="tenant_${tenantCount}_name" required type="text" placeholder="Enter full name"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Email *</label>
+                        <input name="tenant_${tenantCount}_email" required type="email" placeholder="Enter email"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Date of Birth *</label>
+                        <input name="tenant_${tenantCount}_dob" required type="date"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Right To Rent Share Code *</label>
+                        <input name="tenant_${tenantCount}_share_code" required type="text" placeholder="Enter Right To Rent Share Code"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Occupation</label>
+                        <input name="tenant_${tenantCount}_occupation" type="text" placeholder="Your occupation"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium mb-1">Current Address</label>
+                        <textarea name="tenant_${tenantCount}_address" rows="4" placeholder="Enter current address"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800"></textarea>
+                    </div>
+                </div>
+            `;
+            tenantsContainer.appendChild(tenantDiv);
+
+            // Add event listener to the remove button
+            tenantDiv.querySelector('.remove-tenant').addEventListener('click', () => {
+                tenantDiv.remove();
+            });
+        }
+
+        // Add initial tenant section (optional, can start with none)
+        addTenantBtn.addEventListener('click', addTenantSection);
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            const required = ['name', 'email', 'phone', 'visa_status', 'share_code', 'address'];
+            const required = ['name', 'email', 'phone', 'main_applicant_dob', 'visa_status', 'share_code', 'address'];
             let valid = true;
 
+            // Validate main applicant required fields
             required.forEach(id => {
                 const field = document.getElementById(id);
-                if (!field.value.trim()) {
-                    field.classList.add('border-red-500');
+                if (!field || !field.value.trim()) {
+                    if (field) field.classList.add('border-red-500');
                     valid = false;
                 } else {
-                    field.classList.remove('border-red-500');
+                    if (field) field.classList.remove('border-red-500');
                 }
+            });
+
+            // Validate tenant required fields (Name, Email, DOB, Share Code)
+            const tenantSections = tenantsContainer.querySelectorAll('.tenant-section');
+            tenantSections.forEach((section, index) => {
+                const nameField = form[`tenant_${index + 1}_name`];
+                const emailField = form[`tenant_${index + 1}_email`];
+                const dobField = form[`tenant_${index + 1}_dob`];
+                const shareCodeField = form[`tenant_${index + 1}_share_code`];
+                [nameField, emailField, dobField, shareCodeField].forEach(field => {
+                    if (!field.value.trim()) {
+                        field.classList.add('border-red-500');
+                        valid = false;
+                    } else {
+                        field.classList.remove('border-red-500');
+                    }
+                });
             });
 
             if (!valid) {
@@ -148,34 +245,61 @@
             alertBox.classList.add('hidden');
 
             const data = {
-                name: form.name.value,
-                email: form.email.value,
-                phone: form.phone.value,
+                main_applicant_name: form.main_applicant_name.value,
+                main_applicant_email: form.main_applicant_email.value,
+                main_applicant_phone: form.main_applicant_phone.value,
+                main_applicant_dob: form.main_applicant_dob.value,
                 visa: form.visa_status.value,
                 share_code: form.share_code.value,
-                address: form.address.value,
-                occupation: form.occupation.value,
+                main_applicant_address: form.main_applicant_address.value,
+                main_applicant_occupation: form.main_applicant_occupation.value,
                 ni: form.ni.value,
                 nationality: form.nationality.value,
                 movein: form.move_in.value,
                 children: form.children.value,
-                other_tenants: form.other_tenants.value,
-                notes: form.notes.value
+                notes: form.notes.value,
+                tenants: []
             };
 
+            // Collect tenant data
+            tenantSections.forEach((section, index) => {
+                const tenantData = {
+                    name: form[`tenant_${index + 1}_name`] ? form[`tenant_${index + 1}_name`].value : '',
+                    email: form[`tenant_${index + 1}_email`] ? form[`tenant_${index + 1}_email`].value : '',
+                    dob: form[`tenant_${index + 1}_dob`] ? form[`tenant_${index + 1}_dob`].value : '',
+                    share_code: form[`tenant_${index + 1}_share_code`] ? form[`tenant_${index + 1}_share_code`].value : '',
+                    occupation: form[`tenant_${index + 1}_occupation`] ? form[`tenant_${index + 1}_occupation`].value : '',
+                    address: form[`tenant_${index + 1}_address`] ? form[`tenant_${index + 1}_address`].value : ''
+                };
+                data.tenants.push(tenantData);
+            });
+
+            // Format tenant data for email
+            const tenantDetails = data.tenants.map((tenant, index) => `
+Tenant ${index + 1}:
+  Name: ${tenant.name}
+  Email: ${tenant.email}
+  Date of Birth: ${tenant.dob}
+  Right To Rent Share Code: ${tenant.share_code}
+  Occupation: ${tenant.occupation}
+  Address: ${tenant.address}
+            `).join('\n');
+
             const body = `
-Full Name: ${data.name}
-Email: ${data.email}
-Phone: ${data.phone}
+Main Applicant Name: ${data.main_applicant_name}
+Main Applicant Email: ${data.main_applicant_email}
+Main Applicant Phone: ${data.main_applicant_phone}
+Main Applicant Date of Birth: ${data.main_applicant_dob}
 Visa Status: ${data.visa}
-Share Code: ${data.share_code}
-Address: ${data.address}
-Occupation: ${data.occupation}
+Right To Rent Share Code: ${data.share_code}
+Main Applicant Address: ${data.main_applicant_address}
+Main Applicant Occupation: ${data.main_applicant_occupation}
 NI Number: ${data.ni}
 Nationality: ${data.nationality}
 Move-in Date: ${data.movein}
 Number of Children: ${data.children}
-Other Tenant Details: ${data.other_tenants}
+Other Tenants:
+${tenantDetails}
 Notes: ${data.notes}
             `.replace(/\n/g, '%0D%0A');
 
@@ -183,4 +307,5 @@ Notes: ${data.notes}
         });
     </script>
 </body>
+
 </html>
