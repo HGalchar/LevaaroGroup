@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Property Pre-Contract Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#F5F5F5] text-gray-800 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-4xl p-8 bg-[#F5F5F5] rounded-lg shadow-lg">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row items-center justify-between mb-8">
+            <div class="text-center md:text-left mb-4 md:mb-0">
+                <h2 class="text-2xl font-semibold">LEVAARO GROUP LIMITED</h2>
+                <p class="text-sm">23 BARKBY ROAD, LEICESTER, LE4 9HN</p>
+                <p class="text-sm">Email: levaarogroup@gmail.com</p>
+            </div>
+            <div>
+                <img src="./my-image.png" alt="Company Logo" class="w-24 h-24 object-contain" />
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-bold text-center mb-8">Property Pre-Contract Form</h1>
+
+        <!-- Alert -->
+        <div id="alert" class="hidden text-red-600 text-sm mb-6 text-center">Please fill in all required fields.</div>
+
+        <form id="preContractForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-medium mb-1">Full Name *</label>
+                <input id="name" name="name" required type="text" placeholder="Enter full name"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Email Address *</label>
+                <input id="email" name="email" required type="email" placeholder="Enter email"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Phone Number *</label>
+                <input id="phone" name="phone" required type="tel" placeholder="Enter phone number"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Occupation</label>
+                <input name="occupation" type="text" placeholder="Your occupation"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Visa Status *</label>
+                <select id="visa_status" name="visa_status" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800">
+                    <option value="" disabled selected>Select visa status</option>
+                    <option value="citizen">Citizen</option>
+                    <option value="pr">Permanent Resident</option>
+                    <option value="work">Work Visa</option>
+                    <option value="student">Student Visa</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Share Code *</label>
+                <input id="share_code" name="share_code" required type="text" placeholder="Enter share code"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">National Insurance Number</label>
+                <input name="ni" type="text" placeholder="Optional"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Nationality</label>
+                <input name="nationality" type="text" placeholder="E.g. British, Indian"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Expected Move-In Date</label>
+                <input name="move_in" type="date"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Number of Children</label>
+                <input name="children" type="number" min="0" placeholder="Optional"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800" />
+            </div>
+
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-1">Other Tenant Details</label>
+                <textarea name="other_tenants" rows="4" placeholder="Optional details about other tenants"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800"></textarea>
+            </div>
+
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-1">Current Address *</label>
+                <textarea id="address" name="address" required rows="4" placeholder="Enter your current address"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800"></textarea>
+            </div>
+
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-1">Additional Notes</label>
+                <textarea name="notes" rows="4" placeholder="Optional notes or preferences"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-800"></textarea>
+            </div>
+
+            <div class="md:col-span-2">
+                <button type="submit" id="submitBtn"
+                    class="w-full bg-gray-800 text-white py-3 px-6 rounded-md hover:bg-gray-900 transition duration-200">
+                    Submit Form
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('preContractForm');
+        const alertBox = document.getElementById('alert');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const required = ['name', 'email', 'phone', 'visa_status', 'share_code', 'address'];
+            let valid = true;
+
+            required.forEach(id => {
+                const field = document.getElementById(id);
+                if (!field.value.trim()) {
+                    field.classList.add('border-red-500');
+                    valid = false;
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+
+            if (!valid) {
+                alertBox.classList.remove('hidden');
+                return;
+            }
+
+            alertBox.classList.add('hidden');
+
+            const data = {
+                name: form.name.value,
+                email: form.email.value,
+                phone: form.phone.value,
+                visa: form.visa_status.value,
+                share_code: form.share_code.value,
+                address: form.address.value,
+                occupation: form.occupation.value,
+                ni: form.ni.value,
+                nationality: form.nationality.value,
+                movein: form.move_in.value,
+                children: form.children.value,
+                other_tenants: form.other_tenants.value,
+                notes: form.notes.value
+            };
+
+            const body = `
+Full Name: ${data.name}
+Email: ${data.email}
+Phone: ${data.phone}
+Visa Status: ${data.visa}
+Share Code: ${data.share_code}
+Address: ${data.address}
+Occupation: ${data.occupation}
+NI Number: ${data.ni}
+Nationality: ${data.nationality}
+Move-in Date: ${data.movein}
+Number of Children: ${data.children}
+Other Tenant Details: ${data.other_tenants}
+Notes: ${data.notes}
+            `.replace(/\n/g, '%0D%0A');
+
+            window.location.href = `mailto:testtatva180@gmail.com?subject=New Pre-Contract Form&body=${body}`;
+        });
+    </script>
+</body>
+</html>
